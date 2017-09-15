@@ -7,6 +7,9 @@ endfunction
 function y = f2(x)
     y = (x - 1)./log(x) - 1 
 endfunction
+function y = f3(x)
+    y = x**2/4 - sin(x)
+endfunction
 
 function y = biseccion(f,a,b,e)
     if f(a)*f(b)>=0 then
@@ -20,5 +23,16 @@ function y = biseccion(f,a,b,e)
                 b = y
             end
         y = (a + b)/2
+    end
+endfunction
+
+function y = secante(f,x0,x1,tol)
+    y = x1 - (x1 - x0)/(f(x1) - f(x0)) * f(x1);
+    e = abs(x1 - x0)
+    while e > tol
+        x0 = x1
+        x1 = y
+        y = x1 - (x1 - x0)/(f(x1) - f(x0)) * f(x1);
+        e = abs(x1 - x0)
     end
 endfunction
