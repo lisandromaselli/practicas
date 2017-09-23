@@ -8,7 +8,7 @@ from practica_3 import (check_is_hamiltonian_trail,
                         check_is_eulerian_trail,
                         check_is_eulerian_circuit,
                         graph_has_eulerian_trail,
-                        find_eulerian_trail)
+                        find_eulerian_circuit)
 
 
 class TestIsHamiltoneanTrail(unittest.TestCase):
@@ -108,7 +108,7 @@ class TestIsEulerianTrail(unittest.TestCase):
 class TestIsEulerianCircuit(unittest.TestCase):
     pass
 
-
+#import pdb; pdb.set_trace()
 class TestHasEulerianTrail(unittest.TestCase):
     graph_1 = ([], [])
     graph_2 = (['a'], [])
@@ -119,7 +119,6 @@ class TestHasEulerianTrail(unittest.TestCase):
                [('a', 'b'), ('b', 'c'), ('a', 'd'), ('c', 'd'), ('d', 'a')])
     graph_list = [graph_1,graph_2,graph_3,graph_4,graph_5,graph_6]
     def test_is_circuit_cases(self):
-        #import pdb; pdb.set_trace()
         for graph in self.graph_list:
             result = graph_has_eulerian_trail(graph)
             self.assertTrue(
@@ -128,9 +127,31 @@ class TestHasEulerianTrail(unittest.TestCase):
             )
 
 
-class TestFindEulerianTrail(unittest.TestCase):
-    pass
+class TestFindEulerianCircuit(unittest.TestCase):
+    graph_1 = ([], [])
+    graph_2 = (['a'], [])
+    graph_3 = (['a'], [('a', 'a')])
+    graph_4 = (['a', 'b'], [('a', 'b'), ('b', 'a')])
+    graph_5 = (['a', 'b', 'c'], [('a', 'b'), ('b', 'c')])
+    graph_6 = (['a', 'b', 'c', 'd'],
+               [('a', 'b'), ('b', 'c'), ('a', 'd'), ('c', 'd'), ('d', 'a')])
+    G = (list("EBCDAFGHIJ"), [tuple(e) for e in "EB EJ JB BF JF AH CD CI DI".split()])
+    graph_list = [graph_2,graph_3,graph_4]
+    graph_nlist =[graph_1,graph_5,graph_6,G]
+    def test_is_circuit_cases(self):
+        for graph in self.graph_list:
+            result = find_eulerian_circuit(graph)
+            self.assertTrue(
+                bool(result),
+                'caso: find_eulerian_circuit{}'.format(graph)
+            )
+    def test_is_not_circuit_cases(self):
+        for graph in self.graph_nlist:
+            result = find_eulerian_circuit(graph)
+            self.assertEqual(
+                result,[],
+                'caso: find_eulerian_circuit{}'.format(graph)
+            )
 
 if __name__ == '__main__':
     unittest.main()
-

@@ -29,17 +29,13 @@ def Validate_Graph(graph):
 def check_is_hamiltonian_trail(graph, path):
     """Comprueba si una lista de aristas constituye un camino hamiltoniano
     en un grafo.
-
     Args:
         graph (grafo): Grafo en formato de listas.
                        Ej: (['a', 'b', 'c'], [('a', 'b'), ('b', 'c')])
-
         path (lista de aristas): posible camino
                                  Ej: [('a', 'b), ('b', 'c')]
-
     Returns:
         boolean: path es camino hamiltoniano en graph
-
     Raises:
         TypeError: Cuando el tipo de un argumento es inválido
     """
@@ -49,17 +45,13 @@ def check_is_hamiltonian_trail(graph, path):
 def check_is_hamiltonian_circuit(graph, path):
     """Comprueba si una lista de aristas constituye un ciclo hamiltoniano
     en un grafo.
-
     Args:
         graph (grafo): Grafo en formato de listas.
                        Ej: (['a', 'b', 'c'], [('a', 'b'), ('b', 'c')])
-
         path (lista de aristas): posible ciclo
                                  Ej: [('a', 'b), ('b', 'c')]
-
     Returns:
         boolean: path es ciclo hamiltoniano en graph
-
     Raises:
         TypeError: Cuando el tipo de un argumento es inválido
     """
@@ -69,17 +61,13 @@ def check_is_hamiltonian_circuit(graph, path):
 def check_is_eulerian_trail(graph, path):
     """Comprueba si una lista de aristas constituye un camino euleriano
     en un grafo.
-
     Args:
         graph (grafo): Grafo en formato de listas.
                        Ej: (['a', 'b', 'c'], [('a', 'b'), ('b', 'c')])
-
         path (lista de aristas): posible camino
                                  Ej: [('a', 'b), ('b', 'c')]
-
     Returns:
         boolean: path es camino euleriano en graph
-
     Raises:
         TypeError: Cuando el tipo de un argumento es inválido
     """
@@ -89,17 +77,13 @@ def check_is_eulerian_trail(graph, path):
 def check_is_eulerian_circuit(graph, path):
     """Comprueba si una lista de aristas constituye un ciclo euleriano
     en un grafo.
-
     Args:
         graph (grafo): Grafo en formato de listas.
                        Ej: (['a', 'b', 'c'], [('a', 'b'), ('b', 'c')])
-
         path (lista de aristas): posible ciclo
                                  Ej: [('a', 'b), ('b', 'c')]
-
     Returns:
         boolean: path es ciclo euleriano en graph
-
     Raises:
         TypeError: Cuando el tipo de un argumento es inválido
     """
@@ -125,31 +109,45 @@ def graph_has_eulerian_trail(graph):
 
 
     """Comprueba si un grafo no dirigido tiene un camino euleriano.
-
-    Args:
-        graph (grafo): Grafo en formato de listas.
-                       Ej: (['a', 'b', 'c'], [('a', 'b'), ('b', 'c')])
-
-    Returns:
-        boolean: graph tiene un camino euleriano
-
-    Raises:
-        TypeError: Cuando el tipo del argumento es inválido
     """
+def circuit(v,graph,c):
+    #import pdb; pdb.set_trace()
+    V,E = graph
+    n_ady = []
+    for i in E:
+        if v == i[0]:
+            n_ady.append(i[1])
+        if v == i[1]:
+            n_ady.append(i[0])
+    for i in n_ady:
+        if E != []:
+            E.remove((i,v)) if (i,v) in E else E.remove((v,i))
+            circuit(i,graph,c)
+    c.append(v)
 
-
-
-def find_eulerian_trail(graph):
-    """Obtiene un camino euleriano en un grafo no dirigido, si es posible
-
+def find_eulerian_circuit(graph):
+    etiq = {}
+    for v in graph[0]: etiq[v] = 0
+    for e1,e2 in graph[1]:
+        etiq[e1]+= 1
+        etiq[e2]+= 1
+    impar = 0
+    for v in etiq.values():
+        if v % 2 :
+            impar+= 1
+    if impar != 0 or [] == graph[0]:
+        return []
+    v = graph[0][0]
+    c = []
+    circuit(v,graph,c)
+    return c
+    """Obtiene un ciclo euleriano en un grafo no dirigido, si es posible
     Args:
         graph (grafo): Grafo en formato de listas.
                        Ej: (['a', 'b', 'c'], [('a', 'b'), ('b', 'c')])
-
     Returns:
         path (lista de aristas): camino euleriano, si existe
         None: si no existe un camino euleriano
-
     Raises:
         TypeError: Cuando el tipo del argumento es inválido
     """
@@ -158,10 +156,11 @@ def find_eulerian_trail(graph):
     # Recursos:
     # http://caminoseuler.blogspot.com.ar/p/algoritmo-leury.html
     # http://www.geeksforgeeks.org/fleurys-algorithm-for-printing-eulerian-path/
-    pass
+
 
 
 def main():
     pass
+
 if __name__ == '__main__':
     main()

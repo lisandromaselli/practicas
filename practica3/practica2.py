@@ -30,4 +30,4 @@ def main():
 	print( list(partition(G).values()) )
 	
 if __name__ == '__main__':
-	main()	
+	main() 
