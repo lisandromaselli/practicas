@@ -1,0 +1,50 @@
+function [L,U] = doolittle(A)
+    n = size(A)
+    if n(1) <> n(2) then error('ori pelotuda')end
+    U = zeros(n(1),n(1))
+    L = eye(n(1),n(1))
+    for i = 1:n(1)
+        for j = i:n(1)
+            if i == 1 then
+                U(i,j) = A(i,j)
+             else
+            U(i,j) = A(i,j) - L(i,1:i-1) * U(1:i-1,j)
+            end
+        end 
+        for j = i+1:n(1)
+            if i == 1 then
+                L(j,i) = A(j,i)/U(i,i)
+             else
+            L(j,i) = (A(j,i) - L(j,1:i-1) * U(1:i-1,i))/U(i,i)
+            end
+        end
+    end
+endfunction
+function x = reg(A,b)
+    n = size(A)
+    for i=n(1):-1:1
+        suma = 0
+        for j = i+1:n(2)
+            suma = suma + A(i,j)*x(j)
+        end
+        x(i) = (b(i) - suma)/A(i,i)
+    end
+endfunction
+function x = prog(A,b)
+    n = size(A)
+    for i=1:n(1)
+        suma = 0
+        for j = 1:i-1
+            suma = suma + A(i,j)*x(j)
+        end
+        x(i) = (b(i) - suma)/A(i,i)
+    end
+endfunction
+A = [1 2 3 4;1 4 9 16;1 8 27 64;1 16 81 256]
+b =[1 2 0 1]'
+[L,U] = doolittle(A)
+c = prog(L,b)
+x = reg(U,c)
+
+disp(x)
+disp(A*x)
