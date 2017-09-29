@@ -1,0 +1,43 @@
+.data
+fmt: .asciz "%ld\n"
+fmt1: .asciz "%p\n"
+i: .quad 0xdeadbeef
+.text
+.global main
+main:
+	xorq %rax, %rax # cantidad de valores de punto flotante
+	movq $fmt, %rdi # formato para imprimir enteros
+	movq %rsp, %rsi # valor de rsp
+	call printf
+	
+	xorq %rax, %rax # cantidad de valores de punto flotante
+	movq $fmt, %rdi # formato para imprimir enteros
+	movq $fmt,%rsi  # direccion de memoria de la etiqueta
+	call printf
+	
+	xorq %rax, %rax # cantidad de valores de punto flotante
+	movq $fmt1, %rdi # formato para imprimir punteros en hexa
+	movq $fmt,%rsi	 # direccion de memoria de la etiqueta
+	call printf
+	
+	xorq %rax, %rax # cantidad de valores de punto flotante
+	movq $fmt, %rdi # formato para imprimir enteros
+	movq (%rsp), %rsi # valor del tope de la pila
+	call printf
+	
+	xorq %rax, %rax # cantidad de valores de punto flotante
+	movq $fmt, %rdi # el primer argumento es el formato
+	movq 8(%rsp), %rsi # valor rsp + 8 
+	call printf
+	
+	xorq %rax, %rax # cantidad de valores de punto flotante
+	movq $fmt, %rdi # el primer argumento es el formato
+	movq i, %rsi # valor de i
+	call printf
+	
+	xorq %rax, %rax # cantidad de valores de punto flotante
+	movq $fmt1, %rdi # el primer argumento es el formato
+	movq $i, %rsi # direccion de i
+	call printf
+	
+	ret
