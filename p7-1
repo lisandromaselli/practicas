@@ -1,0 +1,61 @@
+clc()
+function y =Lagrange_inter(x,lista_x, lista_y)
+    n_x = size(lista_x)(2)
+    n_y = size(lista_y)(2)
+    if (n_x <> n_y) then error('bad list')
+    end
+    P = 0
+    for i = 1:n_x
+        L = 1
+        for j = 1:n_x
+            if i<>j then
+                L = L * poly([lista_x(j)],'x','roots')/(lista_x(i)-lista_x(j))
+            end
+         end
+         P = P + L * lista_y(i)
+    end
+    y = horner(P,x)
+endfunction
+function y = Newton_inter(x,lista_x,lista_y)
+    n_x = size(lista_x)(2)
+    n_y = size(lista_y)(2)
+    if (n_x <> n_y) then error('bad list')
+    end
+    for i = 1:n_x
+        d(i) = lista_y(i)
+    end
+    for i = 2:n_x
+        for j = n_x:-1:i
+            d(j) = (d(j) - d(j-1))/(lista_x(j)-lista_x(j-1))
+        end
+    end
+    y = d(n_x)
+    for i = n_x - 1:-1:1
+        y = d(i) + (x - lista_x(i))*y
+    end
+endfunction
+
+
+x = Lagrange_inter(1/3,[0.2 0.4],[1.2214 1.4918])
+disp(x)
+x = Lagrange_inter(1/3,[0 0.2 0.4 0.6],[1.0 1.2214 1.4918 1.8221])
+disp(x)
+x = Newton_inter(1/3,[0.2 0.4],[1.2214 1.4918])
+disp(x)
+x = Newton_inter(1/3,[0 0.2 0.4 0.6],[1.0 1.2214 1.4918 1.8221])
+disp(x)
+/*
+n = 2
+    F(x) - P(x) = (x -0.2) * (x - 0.4)/6 * e**0.4
+    x = 1/3
+    cota = -0.0022101106631722532000
+n = 4
+    F(x) - P(x) = x * (x - 0.2) * (x-0.4) * (x -0.6)/120 * e**0.6
+    x = 1/3
+    cota = 0.0000119974900437235200
+ asd*/
+ 
+ 
+ 
+ 
+ 
