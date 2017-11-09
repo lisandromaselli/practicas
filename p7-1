@@ -26,7 +26,7 @@ function y = Newton_inter(x,lista_x,lista_y)
     end
     for i = 2:n_x
         for j = n_x:-1:i
-            d(j) = (d(j) - d(j-1))/(lista_x(j)-lista_x(j-1))
+            d(j) = (d(j) - d(j-1))/(lista_x(j)-lista_x(j-i+1))
         end
     end
     y = d(n_x)
