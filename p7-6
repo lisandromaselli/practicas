@@ -1,0 +1,71 @@
+function x = sustitucionRegresiva(A)
+    dimension = size(A)(1)
+    sol(dimension) = A(dimension, dimension+1) / A(dimension,dimension)
+    for i = dimension-1:-1:1
+        sol(i) = (A(i,dimension+1) - A(i, i+1:dimension) * sol(i+1:dimension)) / A(i,i)
+    end
+    x = sol
+endfunction
+
+function matrizExpandida = eliminacionGaussConPivoteo(A, b)
+    dimension = size(b)(1)
+    for i = 1 : dimension-1
+        if(A(i,i) == 0)
+            for j = i+1:dimension
+                if(A(j,i) ~= 0)
+                    VectorAux = A(j, :)
+                    A(j, :) = A(i, :)
+                    A(i, :) = VectorAux
+                    Auxiliar = b(j)
+                    b(j) = b(i)
+                    b(i) = Auxiliar
+                    break
+                end;
+            end;
+        end;
+        for j = i+1:dimension    
+            coeficiente = A(j,i)/A(i,i)
+            A(j,i:dimension) = A(j,i:dimension) - A(i,i:dimension) * coeficiente
+            b(j) = b(j) - b(i) * coeficiente
+        end;
+    end;
+    matrizExpandida = [A,b]
+endfunction
+
+function y = minimos_cuadrados(lista_x,lista_y,grado)
+    n_1 = size(lista_x)(2)
+    n_2 = size(lista_y)(2)
+    if n_1 <> n_2 then error('bad lists') end
+    A = zeros(grado + 1, grado + 1)
+    b = zeros(grado + 1,1)
+    suma = zeros(1,2*grado + 1)
+    for k = 1:2*grado + 1
+        for j = 1:n_1
+            suma(k) = suma(k) + lista_x(j) ** (k - 1)
+        end
+    end
+    for i = 1:grado + 1
+        for j = 1:n_1
+            b(i) = b(i) + lista_y(j) *(lista_x(j)**(i-1))
+        end
+    end
+    for i = 1:grado + 1
+        for j = 1:grado + 1
+            A(i,j) = suma(i + j - 1)
+        end
+    end
+    coef =  sustitucionRegresiva(eliminacionGaussConPivoteo(A,b))
+    y = poly(coef','x','coeff')
+endfunction
+pts = linspace(0,0.75,500)
+x = [0 0.15 0.31 0.5 0.6 0.75]
+y = [1 1.004 1.31 1.117 1.223 1.422]
+P = minimos_cuadrados(x,y,1)
+plot(pts,horner(P,pts),"r")
+plot2d(x,y,-1)
+P = minimos_cuadrados(x,y,2)
+plot(pts,horner(P,pts),"b")
+plot2d(x,y,-1)
+P = minimos_cuadrados(x,y,3)
+plot(pts,horner(P,pts),"g")
+plot2d(x,y,-1)
