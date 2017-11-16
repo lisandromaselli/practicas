@@ -18,8 +18,22 @@ endfunction
 function y = f(x)
     y = %e**x
 endfunction
+function y = g(x)
+    y = cos(((0 + %pi/2) + x * (%pi/2 - 0))/2)
+endfunction
 clc()
-P = chebyshev_inter(f,10)
+P = chebyshev_inter(f,4)
 disp(P)
 x = linspace(-1,1,500)
-plot(x,horner(P,x)-f(x),"r")
+plot(x,f(x) - horner(P,x),"r")
+
+
+/* ejercicio 9 */
+/*
+f(x) = g( ((b + a) + x * (b - a))/2 )
+x = ((b + a) + x * (b - a))/2 */
+
+P = chebyshev_inter(g,4)
+disp(P)
+x = linspace(-1,1,500)
+plot((%pi/2 + x * %pi/2)/2,cos(x) - horner(P,x),"b")
